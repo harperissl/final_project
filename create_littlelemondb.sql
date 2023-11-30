@@ -24,7 +24,10 @@ DROP TABLE IF EXISTS `LittleLemonDB`.`Customers` ;
 
 CREATE TABLE IF NOT EXISTS `LittleLemonDB`.`Customers` (
   `CustomerID` INT NOT NULL,
-  `Name` VARCHAR(45) NOT NULL,
+  `FullName` VARCHAR(45) NOT NULL,
+  `ContactNumber` VARCHAR(45) NULL,
+  `Email` VARCHAR(45) NOT NULL,
+  `Customerscol` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`CustomerID`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
@@ -45,71 +48,6 @@ CREATE TABLE IF NOT EXISTS `LittleLemonDB`.`Bookings` (
   CONSTRAINT `FK_bookings_customers`
     FOREIGN KEY (`CustomerID`)
     REFERENCES `LittleLemonDB`.`Customers` (`CustomerID`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb3;
-
-
--- -----------------------------------------------------
--- Table `LittleLemonDB`.`Roles`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `LittleLemonDB`.`Roles` ;
-
-CREATE TABLE IF NOT EXISTS `LittleLemonDB`.`Roles` (
-  `RoleID` INT NOT NULL,
-  `Role` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`RoleID`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb3;
-
-
--- -----------------------------------------------------
--- Table `LittleLemonDB`.`Staff`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `LittleLemonDB`.`Staff` ;
-
-CREATE TABLE IF NOT EXISTS `LittleLemonDB`.`Staff` (
-  `StaffID` INT NOT NULL,
-  `Name` VARCHAR(45) NOT NULL,
-  `Salary` INT NOT NULL,
-  `RoleID` INT NOT NULL,
-  PRIMARY KEY (`StaffID`),
-  INDEX `RoleID_idx` (`RoleID` ASC) VISIBLE,
-  CONSTRAINT `FK_staff_roles`
-    FOREIGN KEY (`RoleID`)
-    REFERENCES `LittleLemonDB`.`Roles` (`RoleID`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb3;
-
-
--- -----------------------------------------------------
--- Table `LittleLemonDB`.`ContactDetails`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `LittleLemonDB`.`ContactDetails` ;
-
-CREATE TABLE IF NOT EXISTS `LittleLemonDB`.`ContactDetails` (
-  `ContactID` INT NOT NULL,
-  `Email` VARCHAR(45) NOT NULL,
-  `PhoneNumber` VARCHAR(45) NOT NULL,
-  `Address` VARCHAR(255) NOT NULL,
-  `Country` VARCHAR(45) NOT NULL,
-  `City` VARCHAR(45) NOT NULL,
-  `CustomerID` INT NOT NULL,
-  `StaffID` INT NULL DEFAULT NULL,
-  PRIMARY KEY (`ContactID`),
-  INDEX `StaffID_idx` (`StaffID` ASC) VISIBLE,
-  INDEX `Customer_ID_idx` (`CustomerID` ASC) VISIBLE,
-  CONSTRAINT `FK_contactdetails_customer`
-    FOREIGN KEY (`CustomerID`)
-    REFERENCES `LittleLemonDB`.`Customers` (`CustomerID`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `FK_contacdetails_staff`
-    FOREIGN KEY (`StaffID`)
-    REFERENCES `LittleLemonDB`.`Staff` (`StaffID`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -192,6 +130,40 @@ CREATE TABLE IF NOT EXISTS `LittleLemonDB`.`Orders` (
   CONSTRAINT `FK_order_menu`
     FOREIGN KEY (`MenuID`)
     REFERENCES `LittleLemonDB`.`Menus` (`MenuID`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `LittleLemonDB`.`Roles`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `LittleLemonDB`.`Roles` ;
+
+CREATE TABLE IF NOT EXISTS `LittleLemonDB`.`Roles` (
+  `RoleID` INT NOT NULL,
+  `Role` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`RoleID`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `LittleLemonDB`.`Staff`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `LittleLemonDB`.`Staff` ;
+
+CREATE TABLE IF NOT EXISTS `LittleLemonDB`.`Staff` (
+  `StaffID` INT NOT NULL,
+  `Name` VARCHAR(45) NOT NULL,
+  `Salary` INT NOT NULL,
+  `RoleID` INT NOT NULL,
+  PRIMARY KEY (`StaffID`),
+  INDEX `RoleID_idx` (`RoleID` ASC) VISIBLE,
+  CONSTRAINT `FK_staff_roles`
+    FOREIGN KEY (`RoleID`)
+    REFERENCES `LittleLemonDB`.`Roles` (`RoleID`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
